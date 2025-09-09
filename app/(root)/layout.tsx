@@ -1,3 +1,4 @@
+"use client"
 import { SignedIn, SignedOut, RedirectToSignIn } from '@clerk/nextjs'
 
 export default function RootSegmentLayout({
@@ -10,7 +11,9 @@ export default function RootSegmentLayout({
       <SignedOut>
         <RedirectToSignIn />
       </SignedOut>
-      <SignedIn>{children}</SignedIn>
+      <SignedIn>
+        {children}
+      </SignedIn>
     </>
   )
 }
