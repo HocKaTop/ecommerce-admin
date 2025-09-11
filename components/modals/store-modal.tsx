@@ -7,8 +7,10 @@ import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {toast} from "react-hot-toast"
 import { useState } from "react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
 	name: z.string().min(1),
@@ -16,6 +18,7 @@ const formSchema = z.object({
 
 export const StoreModal = () => {
 	const storeModal = useStoreModalStore();
+	const router = useRouter();
 
 	const [loading, setLoading] = useState(false);
 
@@ -32,10 +35,13 @@ export const StoreModal = () => {
 
 			const response= await axios.post('/api/stores', values);
 
-			console.log(response.data);
+			window.location.assign(`/${response.data.id}`);
+			storeModal.onClose();
+			router.push(`/${response.data.id}`);
+			router.refresh();
 
 		} catch (error){
-			console.log(error);
+			toast.error("Something went wrong");
 		}finally{
 			setLoading(false);
 		}
