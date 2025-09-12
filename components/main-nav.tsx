@@ -14,11 +14,16 @@ export function MainNav({
     const pathname = usePathname();
     const params = useParams() as { storeID?: string };
     const routes= [{
+        href: `/${params.storeID}`,
+        label:"Overview",
+        active: pathname=== `/${params.storeID}`,
+        
+    },{
         href: `/${params.storeID}/settings`,
         label:"Settings",
         active: pathname=== `/${params.storeID}/settings`,
         
-    },];
+    }];
     return(
         <nav className={cn("flex items-center space-x-4 lg:space-x-6")}>
             {routes.map((route) =>(
