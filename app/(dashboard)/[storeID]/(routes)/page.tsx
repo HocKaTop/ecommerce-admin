@@ -3,11 +3,12 @@ import prismadb from "@/lib/prismadb"
 export default async function DashboardPage({
     params,
 }: {
-    params: { storeID: string }
+    params: Promise<{ storeID: string }>
 }) {
+    const { storeID } = await params;
     const store = await prismadb.store.findFirst({
         where: {
-            id: params.storeID,
+            id: storeID,
         },
     });
 

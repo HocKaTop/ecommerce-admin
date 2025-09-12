@@ -12,11 +12,11 @@ export function MainNav({
 }:React.HTMLAttributes<HTMLElement>){
     
     const pathname = usePathname();
-    const params = useParams();
+    const params = useParams() as { storeID?: string };
     const routes= [{
-        href: `/${params.storeId}/settings`,
+        href: `/${params.storeID}/settings`,
         label:"Settings",
-        active: pathname=== `/${params.storeId}/settings`,
+        active: pathname=== `/${params.storeID}/settings`,
         
     },];
     return(
