@@ -25,6 +25,11 @@ export function MainNav({
         active: pathname=== `/${params.storeID}/billboard`,
         
     },{
+        href: `/${params.storeID}/categories`,
+        label:"Categories",
+        active: pathname=== `/${params.storeID}/categories`,
+        
+    },{
         href: `/${params.storeID}/settings`,
         label:"Settings",
         active: pathname=== `/${params.storeID}/settings`,
