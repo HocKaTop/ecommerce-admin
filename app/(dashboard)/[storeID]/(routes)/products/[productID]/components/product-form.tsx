@@ -26,7 +26,7 @@ interface ProductFormProps{
 const formSchema = z.object({
     name: z.string().min(1),
     images: z.object({url:z.string() }).array(),
-    price: z.coerce.number().min(1),
+    price: z.number().min(1),
     categoryID: z.string().min(1),
     colorID: z.string().min(1),
     sizeID: z.string().min(1),
