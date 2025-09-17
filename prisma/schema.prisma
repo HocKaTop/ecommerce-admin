@@ -20,6 +20,7 @@ model Store {
   billboards Billboard[] @relation("StoreToBillboard")
   categories Category[] @relation("StoreToCategory")
   colors Color[] @relation("StoreToColor")
+  products Product[] @relation("StoreToProduct")
   sizes Size[] @relation("StoreToSize")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -44,6 +45,7 @@ model Category{
   store Store @relation("StoreToCategory", fields:[storeID], references: [id])
   billboardID String
   billboard Billboard @relation(fields:[billboardID], references:[id])
+  products Product[] @relation("CategoryToProduct")
   name String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt 
@@ -58,6 +60,7 @@ model Size{
   store Store @relation("StoreToSize", fields: [storeID], references: [id])
   name String
   value String
+  products Product[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt 
 
@@ -70,8 +73,47 @@ model Color{
   store Store @relation("StoreToColor", fields: [storeID], references: [id])
   name String
   value String
+  products Product[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt 
 
   @@index([storeID])
+}
+
+model Product {
+  id String @id @default(uuid())
+  storeID String
+  store Store @relation("StoreToProduct", fields: [storeID], references: [id])
+  categoryID String
+  category Category @relation("CategoryToProduct", fields: [categoryID], references: [id])
+  name String
+  price Decimal
+  isFeatured Boolean @default(false)
+  isArchived Boolean @default(false)
+  sizeID String
+  size Size @relation(fields:[sizeID], references: [id])
+  colorID String
+  color Color @relation(fields: [colorID], references: [id])
+  images Image[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+
+  @@index([storeID])
+  @@index([categoryID])
+  @@index([sizeID])
+  @@index([colorID])
+
+
+}
+
+model Image{
+  id String @id @default(uuid())
+  productID String
+  product Product @relation(fields:[productID], references:[id], onDelete: Cascade)
+  url String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([productID])
 }
