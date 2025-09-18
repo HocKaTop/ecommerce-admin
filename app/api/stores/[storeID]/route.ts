@@ -2,6 +2,34 @@ import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import prismadb from "@/lib/prismadb";
 
+export async function GET(
+  req: Request,
+  { params }: { params: { storeID: string } }
+) {
+  try {
+    const { userId } = await auth();
+
+    if (!userId) {
+      return new NextResponse("Unauthenticated", { status: 401 });
+    }
+    if (!params.storeID) {
+      return new NextResponse("Store id is required", { status: 400 });
+    }
+
+    const result = await prismadb.store.findUnique({
+      where: {
+        id: params.storeID,
+        userID: userId,
+      },
+    });
+
+    return NextResponse.json(result);
+  } catch (error) {
+    console.log("[STORE_GET]", error);
+    return new NextResponse("Internal ERROR", { status: 500 });
+  }
+}
+
 export async function PATCH(
     req: Request,
     { params }: { params: { storeID: string } }
@@ -69,5 +97,3 @@ export async function DELETE(
         return new NextResponse("Internal ERROR", { status: 500 });
     }
 }
-
-
