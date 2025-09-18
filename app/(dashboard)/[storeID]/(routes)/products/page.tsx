@@ -7,23 +7,24 @@ import { formatter } from "@/lib/utils"
 
 
 const ProductsPage = async ({
-    params
-  }: {
-      params:{storeID: string}
-    }
-) => {
-  const products= await prismadb.product.findMany({
-    where:{
-      storeID: params.storeID
+  params,
+}: {
+  params: Promise<{ storeID: string }>;
+}) => {
+  const { storeID } = await params; // 👈 теперь без ошибки
+
+  const products = await prismadb.product.findMany({
+    where: {
+      storeID,
     },
-    include:{
+    include: {
       category: true,
       size: true,
       color: true,
     },
-    orderBy:{
-      createdAt:'desc'
-    }
+    orderBy: {
+      createdAt: "desc",
+    },
   });
   
   const formatedProducts: ProductColumn[] = products.map((item)=>({
@@ -31,9 +32,9 @@ const ProductsPage = async ({
     name: item.name,
     isFeatured: item.isFeatured,
     isArchived: item.isArchived,
-    price: formatter.format(item.price.toNumber()),
+    price: formatter.format(item.price),
     category: item.category.name,
-    size: item.category.name,
+    size: item.size.name,
     color: item.color.value,
     createdAT: format(item.createdAt, "MMMM do, yyyy")
   }))

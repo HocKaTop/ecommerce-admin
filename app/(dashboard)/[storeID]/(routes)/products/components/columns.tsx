@@ -54,7 +54,7 @@ export const columns: ColumnDef<ProductColumn>[] = [
     }
   },
   {
-    accessorKey: "createdAt",
+    accessorKey: "createdAT",
     header: "Date",
   },
   {
